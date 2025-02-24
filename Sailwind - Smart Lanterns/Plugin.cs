@@ -27,7 +27,7 @@ namespace Smart_Lanterns
         {
             HarmonyFileLog.Enabled = true;
 
-            InitializeLaternSchedule();
+            InitializeLanternSchedule();
 
 
             // Plugin startup logic
@@ -37,7 +37,7 @@ namespace Smart_Lanterns
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), PLUGIN_ID);          
         }
 
-        private void InitializeLaternSchedule()
+        private void InitializeLanternSchedule()
         {
             lanternStartTime = Config.Bind("LanternSettings",
                                            "LanternStartTime",
