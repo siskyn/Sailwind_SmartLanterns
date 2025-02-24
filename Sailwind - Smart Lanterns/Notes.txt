@@ -1,0 +1,3 @@
+﻿void Prefix() → Runs Prefix then always runs the original method.
+bool Prefix() { return false; } → Runs Prefix but completely skips the original method.
+bool Prefix() { return true; } → Runs Prefix then runs the original method (same as void).
