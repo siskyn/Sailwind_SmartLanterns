@@ -23,6 +23,7 @@ namespace Smart_Lanterns.Patches
 
     internal static class LanternToggle
     {
+        static bool isSwitchedOn = false;
 
         static void Postfix(Sun __instance, ref float ___localTime)
         {
@@ -30,6 +31,7 @@ namespace Smart_Lanterns.Patches
 
             float startTime = Plugin.lanternStartTime.Value;
             float stopTime = Plugin.lanternStopTime.Value;
+            
 
             //FileLog.Log("Local time is: " + ___localTime);
             //FileLog.Log($"Lantern start time: {startTime}");
@@ -37,11 +39,19 @@ namespace Smart_Lanterns.Patches
 
             if (IsTimeInRange(___localTime, startTime, stopTime))
             {
-                ToggleLanterns(true);
+                if (!isSwitchedOn || Plugin.DEBUGMODE)
+                {
+                    SetLanterns(true);
+                    isSwitchedOn = true;
+                }
             }
             else
             {
-                ToggleLanterns(false);
+                if (isSwitchedOn || Plugin.DEBUGMODE)
+                {
+                    SetLanterns(false);
+                    isSwitchedOn = false;
+                }
             }
 
         }
@@ -60,23 +70,37 @@ namespace Smart_Lanterns.Patches
                 return currentTime >= startTime || currentTime <= stopTime;
             }
         }
-        private static void ToggleLanterns(bool turnOn)
+        private static void SetLanterns(bool turnOn)
         {
             ShipItemLight[] allLanterns = UnityEngine.Object.FindObjectsOfType<ShipItemLight>();
             foreach (var lantern in allLanterns)
             {
                 if (lantern != null)
                 {
-                    // Set lantern's state based on the time range
-                    MethodInfo setLightMethod = typeof(ShipItemLight).GetMethod("SetLight", BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (setLightMethod != null)
-                    {
-                        setLightMethod.Invoke(lantern, new object[] { turnOn });
-                        FileLog.Log($"Lantern {lantern.name} turned {(turnOn ? "on" : "off")}");
-                    }
-                    else
-                    {
-                        FileLog.Log("SetLight method not found on " + lantern.name);
+
+                    //FileLog.Log("Lantern " + lantern.name + " uses oil: " + lantern.usesOil);
+                    //FileLog.Log("Lantern " + lantern.name + " uses oil: " + lantern.);
+                    
+                    //FileLog.Log("Lantern " + lantern.name + " is hanging: " + lantern.GetComponent<HangableItem>().IsHanging());
+
+
+                    if ((!lantern.usesOil && Plugin.controlCandleLanterns.Value) || (lantern.usesOil && Plugin.controlOilLanterns.Value)) 
+                    {//only touch it if we're meant to control the type of lantern the current one is.
+
+                        if (lantern.GetComponent<HangableItem>().IsHanging())
+                        {//only touch the lantern if it's hanging on a hook
+
+                            MethodInfo setLightMethod = typeof(ShipItemLight).GetMethod("SetLight", BindingFlags.NonPublic | BindingFlags.Instance);
+                            if (setLightMethod != null)
+                            {
+                                setLightMethod.Invoke(lantern, new object[] { turnOn });
+                                //FileLog.Log($"Lantern {lantern.name} turned {(turnOn ? "on" : "off")}");
+                            }
+                            else
+                            {
+                                FileLog.Log("SetLight method not found on " + lantern.name);
+                            }
+                        }
                     }
                 }
             }

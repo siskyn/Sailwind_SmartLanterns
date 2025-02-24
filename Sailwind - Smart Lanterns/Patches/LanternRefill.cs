@@ -45,8 +45,9 @@ namespace Smart_Lanterns.Patches
 
         static bool Prefix(ShipItemLight __instance, ref int ___health, ref int ___initialHealth)
         {
-
-            if (___health <= 0f) // but we can read it directly without ref
+            if (__instance.usesOil) return true;// we're not touching oil lanterns, just let the original method run unchanged.
+            if (!Plugin.refillCandleLanterns.Value) return true; //per config, user requested to not refill the candle lanterns so do nothing, just let the original method run unchanged.
+            if (___health <= 0f)
             {
                 FileLog.Log("health <= 0, triggering candle restock.");
                 bool result = consumeCandle();
