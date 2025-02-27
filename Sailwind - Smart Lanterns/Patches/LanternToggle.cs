@@ -27,6 +27,7 @@ namespace Smart_Lanterns.Patches
 
         static void Postfix(Sun __instance, ref float ___localTime)
         {
+            
             //float localTime = Sun.sun.localTime; // Get the local (timezone-adjusted) time
 
             float startTime = Plugin.lanternStartTime.Value;
@@ -98,7 +99,7 @@ namespace Smart_Lanterns.Patches
                             }
                             else
                             {
-                                FileLog.Log("SetLight method not found on " + lantern.name);
+                                //FileLog.Log("SetLight method not found on " + lantern.name);
                             }
                         }
                     }

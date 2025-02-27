@@ -1,9 +1,18 @@
-﻿Changes:
+﻿
+
+to do:
+- add the option to have the lanterns off while asleep + controllable via settings.
+
+
+
+Changes:
+V0.0.3
+* Fix a bug that was causing permanent outlines around lanterns
+
+
 v0.0.2
 * Stop refilling oil lanterns with candles
 * Added setting to choose which kind of lanterns should be controlled (oil, candle)
 * Only try to change the lantern state once when a turn on/off time passed. This allows manual changes until next scheduled time.
 * Removed a debug flag that was causing a log file to be created and quickly increase in size on the desktop.
 * Only controls lanterns that are hanging on hooks
-
-to do:

@@ -13,7 +13,7 @@ namespace Smart_Lanterns
     {
         public const string PLUGIN_ID = "com.couladin.SmartLanterns";
         public const string PLUGIN_NAME = "SmartLanterns";
-        public const string PLUGIN_VERSION = "0.0.2";
+        public const string PLUGIN_VERSION = "0.0.3";
 
 
         public static bool DEBUGMODE = false;
@@ -66,7 +66,7 @@ namespace Smart_Lanterns
                                              "ControlOilLanterns",
                                              true, // default value
                                              "Enable or disable control for oil lanterns (true or false)");
-            controlOilLanterns = Config.Bind("LanternSettings",
+            refillCandleLanterns = Config.Bind("LanternSettings",
                                              "RefillCandleLanterns",
                                              true, // default value
                                              "Enable or disable refilling candles in candle lanterns (true or false)");
