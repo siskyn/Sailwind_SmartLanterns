@@ -7,10 +7,10 @@ Features:
 Compatibility:  
 • No known compatibility issues.  
 
-  Requirements:
-• [BepInEx](https://github.com/BepInEx/BepInEx/releases/latest)
-• Sailwind beta version 0.30.b2 or later
-
+  Requirements:  
+• [BepInEx](https://github.com/BepInEx/BepInEx/releases/latest)  
+• Sailwind beta version 0.30.b2 or later  
+  
 
 Installation:  
 • Download the most recent release, Unpack the archive and drop the folder in Sailwind\BepInEx\plugins\  
