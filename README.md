@@ -14,3 +14,6 @@ Compatibility:
 
 Installation:  
 • Download the most recent release, Unpack the archive and drop the folder in Sailwind\BepInEx\plugins\  
+
+How to change settings:  
+• After installing the mod, run the game at least once, then go to folder Sailwind\BepInEx\config\   and edit the file "com.couladin.SmartLanterns.cfg"
