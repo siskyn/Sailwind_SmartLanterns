@@ -1,11 +1,8 @@
 ﻿
-
-to do:
-- add the option to have the lanterns off while asleep + controllable via settings.
-
-
-
 Changes:
+V0.0.4
+* Fix a bug where automatically refilling a lit lantern would turn it off.
+
 V0.0.3
 * Fix a bug that was causing permanent outlines around lanterns
 

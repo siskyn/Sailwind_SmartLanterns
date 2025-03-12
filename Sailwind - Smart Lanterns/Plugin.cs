@@ -13,7 +13,7 @@ namespace Smart_Lanterns
     {
         public const string PLUGIN_ID = "com.couladin.SmartLanterns";
         public const string PLUGIN_NAME = "SmartLanterns";
-        public const string PLUGIN_VERSION = "0.0.3";
+        public const string PLUGIN_VERSION = "0.0.4";
 
 
         public static bool DEBUGMODE = false;
@@ -71,8 +71,8 @@ namespace Smart_Lanterns
                                              true, // default value
                                              "Enable or disable refilling candles in candle lanterns (true or false)");
 
-            Logger.LogInfo($"Lantern Start Time: {lanternStartTime.Value}");
-            Logger.LogInfo($"Lantern Stop Time: {lanternStopTime.Value}");
+            //Logger.LogInfo($"Lantern Start Time: {lanternStartTime.Value}");
+            //Logger.LogInfo($"Lantern Stop Time: {lanternStopTime.Value}");
         }
     }
 }

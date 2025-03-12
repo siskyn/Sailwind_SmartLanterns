@@ -9,6 +9,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib.Tools;
 using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace Smart_Lanterns.Patches
 {
@@ -56,6 +57,13 @@ namespace Smart_Lanterns.Patches
                 {
                     ___health = ___initialHealth;//we succesfully removed a candle from storage, so refill the lantern.
                     //FileLog.Log("Lantern restocked succesfully.");
+
+                    //try turning it on again to prevent the bug where it turns off when refilling.
+                    MethodInfo setLightMethod = typeof(ShipItemLight).GetMethod("SetLight", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (setLightMethod != null)
+                    {
+                        setLightMethod.Invoke(__instance, new object[] { true });                        
+                    }
                 }
             }
 
@@ -71,12 +79,12 @@ namespace Smart_Lanterns.Patches
             {
                 if (crate.name == "lantern candles")//this will only identify sealed candle crates. we actually want to avoid those. need to verify contents instead. See methods in class "ShipitemCrate"
                 {
-                    FileLog.Log("found sealed lantern crate with " + crate.amount + " candles inside.");
+                    //FileLog.Log("found sealed lantern crate with " + crate.amount + " candles inside.");
                     if (crate.amount > 0 && crate.sold)
                     {//valid crate to pull a candle from
                         
                         crate.amount--;  // Remove one candle
-                        FileLog.Log("Used 1 candle from storage.");
+                        //FileLog.Log("Used 1 candle from storage.");
                         return true;  // Found and consumed a candle, exit early
                     }
                 }

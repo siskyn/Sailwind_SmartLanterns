@@ -24,6 +24,7 @@ namespace Smart_Lanterns.Patches
     internal static class LanternToggle
     {
         static bool isSwitchedOn = false;
+        internal static ManualLogSource myLog = Plugin.logSource;
 
         static void Postfix(Sun __instance, ref float ___localTime)
         {
@@ -31,13 +32,11 @@ namespace Smart_Lanterns.Patches
             //float localTime = Sun.sun.localTime; // Get the local (timezone-adjusted) time
 
             float startTime = Plugin.lanternStartTime.Value;
-            float stopTime = Plugin.lanternStopTime.Value;
-            
+            float stopTime = Plugin.lanternStopTime.Value;            
 
             //FileLog.Log("Local time is: " + ___localTime);
             //FileLog.Log($"Lantern start time: {startTime}");
             //FileLog.Log($"Lantern stop time: {stopTime}");
-
             if (IsTimeInRange(___localTime, startTime, stopTime))
             {
                 if (!isSwitchedOn || Plugin.DEBUGMODE)
@@ -73,23 +72,28 @@ namespace Smart_Lanterns.Patches
         }
         private static void SetLanterns(bool turnOn)
         {
+            int i = 1;
+            myLog.LogInfo("Switching all hooked lanterns to: " + (turnOn ? "on" : "off"));
             ShipItemLight[] allLanterns = UnityEngine.Object.FindObjectsOfType<ShipItemLight>();
             foreach (var lantern in allLanterns)
             {
                 if (lantern != null)
                 {
 
+                    myLog.LogInfo("Lantern " + i + " found. Does it use oil? " + lantern.usesOil);
                     //FileLog.Log("Lantern " + lantern.name + " uses oil: " + lantern.usesOil);
                     //FileLog.Log("Lantern " + lantern.name + " uses oil: " + lantern.);
-                    
+
                     //FileLog.Log("Lantern " + lantern.name + " is hanging: " + lantern.GetComponent<HangableItem>().IsHanging());
 
 
                     if ((!lantern.usesOil && Plugin.controlCandleLanterns.Value) || (lantern.usesOil && Plugin.controlOilLanterns.Value)) 
                     {//only touch it if we're meant to control the type of lantern the current one is.
+                        myLog.LogInfo("Lantern  " + i + "is meant to be controlled.");
 
                         if (lantern.GetComponent<HangableItem>().IsHanging())
                         {//only touch the lantern if it's hanging on a hook
+                            myLog.LogInfo("Lantern  " + i + "is hanging on a hook. Pull the trigger.");
 
                             MethodInfo setLightMethod = typeof(ShipItemLight).GetMethod("SetLight", BindingFlags.NonPublic | BindingFlags.Instance);
                             if (setLightMethod != null)
@@ -101,9 +105,11 @@ namespace Smart_Lanterns.Patches
                             {
                                 //FileLog.Log("SetLight method not found on " + lantern.name);
                             }
+                            myLog.LogInfo("Lantern  " + i + " has been switched.");
                         }
                     }
                 }
+                i++;
             }
         }
 
